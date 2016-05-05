@@ -72,6 +72,13 @@ $route['users']['GET'] = 'users/get';
 $route['users']['POST'] = 'users/add';
 $route['users/(:num)']['PUT'] = 'users/update/$1';
 
+// albums/images routing
+$route['albums/images/(:num)']['DELETE'] = 'albums_images/delete/$1';
+$route['albums/images/(:num)']['GET'] = 'albums_images/get/$1';
+$route['albums/images']['GET'] = 'albums_images/get';
+$route['albums/images']['POST'] = 'albums_images/add';
+$route['albums/images/(:num)']['PUT'] = 'albums_images/update/$1';
+
 // cache
 $route['memcached/(:any)']['GET'] = 'cache/delete/$1';
 $route['memcached']['GET'] = 'cache/view';
