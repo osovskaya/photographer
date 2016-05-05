@@ -190,6 +190,33 @@ INSERT INTO `packages` VALUES (1,1,'a',1,10,NULL,1,'2016-04-04 08:36:55',NULL),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reset`
+--
+
+DROP TABLE IF EXISTS `reset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reset` (
+  `code` varchar(64) NOT NULL,
+  `userid` int(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `used` enum('yes','no') NOT NULL DEFAULT 'no',
+  `lifetime` int(10) NOT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reset`
+--
+
+LOCK TABLES `reset` WRITE;
+/*!40000 ALTER TABLE `reset` DISABLE KEYS */;
+INSERT INTO `reset` VALUES ('015ab80f7fb0c1266814d70daa9230cd7bf27ce4e2fc17bb478794d064b0f8c9',95,'2016-05-03 14:52:43','no',1462287763),('1d7c4c06f55bb641f24474c5c5befac007a80f8d0af2e771829dc6a4e4030c5d',95,'2016-05-03 14:53:48','yes',1462287828),('2be4db5768df99ea776b655a5d4dcfd98876b64957e62a15fe1d4149ecab4f1a',95,'2016-05-02 15:55:09','no',1462205109),('5f319ffcd696ff6bce665991897e283465b6538c3edadebb3ada62dc2853b680',95,'2016-05-03 14:56:37','yes',1462287997),('63b216cc22466b7615c7f4d106f220b0b0fc4b2773eb2121501732aa2d675e1f',95,'2016-05-02 14:51:52','no',1462201312),('65e981ee2fed10dbcbfe6ce64e78ab5687e9dd41f0012ef389320988d2ac70ce',95,'2016-05-02 14:44:47','no',0),('66fe038388ec97089bdc30eb0ef49b4966e55752ce1b2561bc8d1e7a8cd7e196',95,'2016-05-02 14:43:02','no',0),('69177cdcc3777753424c4607fea337593385398642e839818374fa83e5d1c387',95,'2016-05-03 14:48:11','no',1462287491),('82d8310cae33159dff7c3a2c63d74834d0303e76754e7bf1443e8be6356142f0',95,'2016-05-03 15:03:06','yes',1462288386),('a181bc90f2a0514f3c36729abac96d55396ee78498f4190f182dff96caebde4e',95,'2016-05-02 15:28:18','no',1462203498),('a578da0af74f0f5cf26cbc84439084d62397a77686ef2de77da2ae7ad74dc922',95,'2016-05-03 13:56:18','no',1462284378),('bc40e39d32204161e160db6395ff7dce7ce8a260e670d6b9c306f055b93c75f2',95,'2016-05-02 16:15:37','yes',1462206337),('c6e6cb52c7858c8457a65fecbfc0b72c7f37b87378195219950a205588585431',95,'2016-05-03 14:54:25','yes',1462287864),('d9295a0669bd6de111f150864788ceb65b35f3ce8ecb4980a4d74f909c713787',95,'2016-05-02 16:13:33','yes',1462206213),('ee6d41c98c3e057620d6ff39d6f1129ad6beeb56db4487c779c2585d706feba0',95,'2016-05-03 13:52:35','no',1462284155);
+/*!40000 ALTER TABLE `reset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user/packages`
 --
 
@@ -236,7 +263,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +272,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','ann','ann','ann','24cc65df753de47ba1352bd44883fa71c2751ba1d6d197c94a4378e26b695ce6',NULL,NULL,'2016-04-04 08:36:55'),(3,'photographer','kat','ron','ron','57589e4c86d954f50cd28a1b6cd5322360db68c99a3c55a5d1fe283cdc9a0bfe',NULL,NULL,'2016-04-04 08:36:55'),(5,'photographer','nick','nick','nick','',NULL,NULL,'2016-04-04 08:36:55'),(6,'photographer','ray','ray','ray','',NULL,NULL,'2016-04-04 08:36:55'),(7,'client','client1','client1','client1','',NULL,NULL,'2016-04-04 08:36:55'),(8,'client','client2','client2','client2','',NULL,NULL,'2016-04-04 08:36:55'),(71,'client','client1000','client1009','111','',NULL,NULL,'2016-04-10 21:10:40'),(72,'client','client1000','client100999','111','',NULL,NULL,'2016-04-11 05:34:19'),(73,'client','client1000','client10010','111','',NULL,NULL,'2016-04-11 05:35:20'),(74,'client','client1000','client1010','111','','2147483647',NULL,'2016-04-11 05:48:52'),(75,'client','client1000','client1011','1234567891','','123456789123',NULL,'2016-04-11 05:50:11'),(76,'client','client1000','client1022','1234567891','','123456789123',NULL,'2016-04-11 12:44:49'),(77,'client','client1000','client1026','1234567891','','123456789123',NULL,'2016-04-11 12:46:18'),(78,'client','aaa','aaa','aaa','',NULL,NULL,'2016-04-14 07:45:07'),(79,'client','test','test','test','','111111111111',NULL,'2016-04-14 11:55:53'),(80,'client','test','test2','test','','111111111111',NULL,'2016-04-14 11:57:50'),(81,'','test8','','','',NULL,NULL,'2016-04-14 12:04:29'),(82,'client','client','client2000','client2000','',NULL,NULL,'2016-04-25 06:39:04'),(83,'client','111','111','111','','111111111111',NULL,'2016-04-26 12:01:36'),(84,'client','111','1111','111','',NULL,NULL,'2016-04-26 12:04:19'),(85,'client','111','1121','111','',NULL,NULL,'2016-04-26 12:05:25'),(86,'client','111','1131','111','','111111111111',NULL,'2016-04-26 12:05:33'),(87,'client','111','1141','111','','',NULL,'2016-04-26 12:05:59'),(88,'photographer','test','test1','test','',NULL,NULL,'2016-04-26 13:52:39'),(89,'client','1','1','1','','',NULL,'2016-04-26 14:05:31'),(90,'client','1','11','1','','',NULL,'2016-04-26 14:05:38'),(91,'client','1','11111','1','','',NULL,'2016-04-26 14:05:50'),(92,'client','1','111111','1','','',NULL,'2016-04-26 14:05:55');
+INSERT INTO `users` VALUES (1,'admin','ann','ann','ann','78915bba1fdab08be80f8607e83a71aedbbc23008ef0f73f8cb8d002410e2ef4',NULL,NULL,'2016-04-04 08:36:55'),(3,'photographer','kat','ron','ron','57589e4c86d954f50cd28a1b6cd5322360db68c99a3c55a5d1fe283cdc9a0bfe',NULL,NULL,'2016-04-04 08:36:55'),(5,'photographer','nick','nick','nick','',NULL,NULL,'2016-04-04 08:36:55'),(6,'photographer','ray','ray','ray','',NULL,NULL,'2016-04-04 08:36:55'),(7,'client','client1','client1','client1','',NULL,NULL,'2016-04-04 08:36:55'),(8,'client','client2','client2','client2','',NULL,NULL,'2016-04-04 08:36:55'),(71,'client','client1000','client1009','111','',NULL,NULL,'2016-04-10 21:10:40'),(72,'client','client1000','client100999','111','',NULL,NULL,'2016-04-11 05:34:19'),(73,'client','client1000','client10010','111','',NULL,NULL,'2016-04-11 05:35:20'),(74,'client','client1000','client1010','111','','2147483647',NULL,'2016-04-11 05:48:52'),(75,'client','client1000','client1011','1234567891','','123456789123',NULL,'2016-04-11 05:50:11'),(76,'client','client1000','client1022','1234567891','','123456789123',NULL,'2016-04-11 12:44:49'),(77,'client','client1000','client1026','1234567891','','123456789123',NULL,'2016-04-11 12:46:18'),(78,'client','aaa','aaa','aaa','',NULL,NULL,'2016-04-14 07:45:07'),(79,'client','test','test','test','','111111111111',NULL,'2016-04-14 11:55:53'),(80,'client','test','test2','test','','111111111111',NULL,'2016-04-14 11:57:50'),(81,'','test8','','','',NULL,NULL,'2016-04-14 12:04:29'),(82,'client','client','client2000','client2000','',NULL,NULL,'2016-04-25 06:39:04'),(83,'client','111','111','111','','111111111111',NULL,'2016-04-26 12:01:36'),(84,'client','111','1111','111','',NULL,NULL,'2016-04-26 12:04:19'),(85,'client','111','1121','111','',NULL,NULL,'2016-04-26 12:05:25'),(86,'client','111','1131','111','','111111111111',NULL,'2016-04-26 12:05:33'),(87,'client','111','1141','111','','',NULL,'2016-04-26 12:05:59'),(88,'photographer','test','test1','test','',NULL,NULL,'2016-04-26 13:52:39'),(89,'client','1','1','1','','',NULL,'2016-04-26 14:05:31'),(90,'client','1','11','1','','',NULL,'2016-04-26 14:05:38'),(91,'client','1','11111','1','','',NULL,'2016-04-26 14:05:50'),(92,'client','1','111111','1','','',NULL,'2016-04-26 14:05:55'),(93,'admin','test','test2345','test','',NULL,NULL,'2016-04-28 07:55:32'),(94,'admin','test','test123','test','',NULL,NULL,'2016-04-28 08:04:19'),(95,'client','client','aaa@mail.ru','111','',NULL,NULL,'2016-05-02 14:41:15');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -258,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-27 11:46:14
+-- Dump completed on 2016-05-05 14:12:46
