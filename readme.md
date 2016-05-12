@@ -40,6 +40,7 @@ To create a database see file photographer.sql.
 1. Create a database for application.
 2. Import file  photographer.sql to created database.
 
+
 	Configuration
 
 You can find main config file in /application/config/config.php.
@@ -67,9 +68,11 @@ Instead of '/var/www/' should be written path to your web directory, where appli
 To run apidoc correctly edit apidoc.json file in the root directory of your application:
 "url" : "https://mysite.com" (write here URL to your web site)
 
+
 	Usage
 	
 Documentation about how to use api is available on a link http://hostname/apidoc, where 'hostname' is your host name.
+
 
 	Structure
 	
@@ -90,20 +93,18 @@ In /application/config/routes.php you can find all possible routes.
 Authentication
 
 Authentication works before any of the controllers are loaded.
-First it checks token in cookies, if there is no token it checks parameters in authorization 
-header with the one that are in database, if it is OK it generates token and saves it in cookies and database.
+First it checks token in cookies, if there is no token it checks parameters in authorization header with the one that are in database, if it is OK it generates token and saves it in cookies and database. 
 Authentication is not needed for adding new user.
 Authentication controller can be found in /application/hooks/Authentication.php.
-Authentication can be disabled by setting config parameter to false in /application/config/config.php:
-'$config['enable_hooks'] = FALSE;'.
+Authentication can be disabled by setting config parameter to false or enabled by sitting parameter to true in /application/config/config.php:
+'$config['enable_hooks'] = TRUE;'.
 
 Cache
 
 Response from GET and POST requests is cached with the help of memcached module.
 Memcache viewer is available on a link http://hostname/memcached.
 Cache can be deleted by a key through GET request or by pressing delete link in a cache viewer.
-Cache controller can be found in /application/controllers/Cache.php, model - /application/models/Cache_model.php, view -
-/application/views/cache.php.
+Cache controller can be found in /application/controllers/Cache.php, model - /application/models/Cache_model.php, view - /application/views/cache.php.
 
 Resized
 
