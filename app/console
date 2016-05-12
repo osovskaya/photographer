@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+
+<?php
+
+set_time_limit(0);
+date_default_timezone_set('Europe/Kiev');
+
+// include the composer autoloader
+require_once __DIR__ . '/../vendor/autoload.php'; 
+
+// import the Symfony Console Application 
+use Symfony\Component\Console\Application; 
+use Console\Command\ResizeCommand;
+
+$app = new Application();
+$app->add(new ResizeCommand());
+$app->run();
