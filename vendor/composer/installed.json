@@ -1,41 +1,40 @@
 [
     {
-        "name": "symfony/console",
-        "version": "2.4.x-dev",
-        "version_normalized": "2.4.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/Console",
+        "name": "symfony/polyfill-mbstring",
+        "version": "v1.1.1",
+        "version_normalized": "1.1.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/console.git",
-            "reference": "39dd1c85ffdfc3c5fb008019dd027af05f64ec36"
+            "url": "https://github.com/symfony/polyfill-mbstring.git",
+            "reference": "1289d16209491b584839022f29257ad859b8532d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/console/zipball/39dd1c85ffdfc3c5fb008019dd027af05f64ec36",
-            "reference": "39dd1c85ffdfc3c5fb008019dd027af05f64ec36",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
+            "reference": "1289d16209491b584839022f29257ad859b8532d",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "require-dev": {
-            "symfony/event-dispatcher": "~2.1"
-        },
         "suggest": {
-            "symfony/event-dispatcher": ""
+            "ext-mbstring": "For best performance"
         },
-        "time": "2014-09-22 08:51:05",
+        "time": "2016-01-20 09:13:37",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.4-dev"
+                "dev-master": "1.1-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Console\\": ""
-            }
+            "psr-4": {
+                "Symfony\\Polyfill\\Mbstring\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -43,47 +42,84 @@
         ],
         "authors": [
             {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
             },
             {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
             }
         ],
-        "description": "Symfony Console Component",
-        "homepage": "http://symfony.com"
+        "description": "Symfony polyfill for the Mbstring extension",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "mbstring",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
     },
     {
-        "name": "mikey179/vfsStream",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
+        "name": "symfony/console",
+        "version": "v3.0.6",
+        "version_normalized": "3.0.6.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/mikey179/vfsStream.git",
-            "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e"
+            "url": "https://github.com/symfony/console.git",
+            "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
-            "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
+            "url": "https://api.github.com/repos/symfony/console/zipball/34a214710e0714b6efcf40ba3cd1e31373a97820",
+            "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.0"
+            "php": ">=5.5.9",
+            "symfony/polyfill-mbstring": "~1.0"
         },
-        "time": "2012-08-25 12:49:29",
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/event-dispatcher": "~2.8|~3.0",
+            "symfony/process": "~2.8|~3.0"
+        },
+        "suggest": {
+            "psr/log": "For using the console logger",
+            "symfony/event-dispatcher": "",
+            "symfony/process": ""
+        },
+        "time": "2016-04-28 09:48:42",
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "org\\bovigo\\vfs": "src/main/php"
-            }
+            "psr-4": {
+                "Symfony\\Component\\Console\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "BSD"
+            "MIT"
         ],
-        "homepage": "http://vfs.bovigo.org/"
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Console Component",
+        "homepage": "https://symfony.com"
     }
 ]

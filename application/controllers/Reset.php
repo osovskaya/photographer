@@ -38,28 +38,19 @@ class Reset extends CI_Controller
         // check if email exists
         $response = $this->object->checkEmail();
 
-        switch ($response)
+        if ($response === NULL) $this->sendResponse(404);
+        elseif ($response === false) $this->sendResponse(406, $this->form_validation->error_array());
+        elseif ($response)
         {
-            case true:
-                // generate code
-                $code = $this->object->makeCode($response['id']);
-                //send email to user with code
-                if (!$this->sendMail($code))
-                {
-                    throw new Exception('Error occurred when sending email');
-                }
-                $this->sendResponse(201);
-                break;
-
-            case false:
-                $this->sendResponse(406, $this->form_validation->error_array());
-                break;
-            
-            case NULL:
-                $this->sendResponse(404);
-                break;
+            // generate code
+            $code = $this->object->makeCode($response['id']);
+            //send email to user with code
+            if (!$this->sendMail($code))
+            {
+                throw new Exception('Error occurred when sending email');
+            }
+            $this->sendResponse(201);
         }
-
     }
 
     public function sendMail($code)
@@ -119,19 +110,8 @@ class Reset extends CI_Controller
         // check if code valid
         $response = $this->object->checkCode();
 
-        switch ($response)
-        {
-            case true:
-                $this->sendResponse(204, 'Password successfully changed!');
-                break;
-
-            case false:
-                $this->sendResponse(406, $this->form_validation->error_array());
-                break;
-
-            case NULL:
-                $this->sendResponse(404);
-                break;
-        }
+        if ($response === NULL) $this->sendResponse(404);
+        if ($response === false) $this->sendResponse(406, $this->form_validation->error_array());
+        if ($response) $this->sendResponse(204, 'Password successfully changed!');
     }
 } 
