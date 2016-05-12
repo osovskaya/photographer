@@ -1,0 +1,10 @@
+role=photo&name=client20&username=client20&password=client20&phone=client20
+
+ALTER TABLE `albums` ADD FOREIGN KEY ( `user` ) REFERENCES `IntersogLabs2`.`users` (
+`id`
+) ON DELETE NO ACTION ON UPDATE CASCADE ;
+
+	'host' => 'mysql.cba.pl',
+	'dbname' => 'flowershop_kl_com_ua',
+	'user' => 'flowershop',
+	'password' => 'flowershop1489'
