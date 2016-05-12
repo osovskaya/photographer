@@ -1,8 +1,10 @@
 Photographer REST API
 
+
 Photographer is a REST API for photographers, which helps them to work with their clients, share photos and make orders.
 
-Software description
+	Software description
+
 API is written on PHP using CodeIgniter framework, Symphony Console, Swiftmailer.  
 
 For now there are implemented the following objects:
@@ -72,17 +74,21 @@ Documentation about how to use api is available on a link http://hostname/apidoc
 	Structure
 	
 Controllers
+
 In /application/core there is MY_Controller.php for main controller which implement all methods.
 In application/controllers there are other controllers which extend main controller, load model and set table name.
 
 Models
+
 In /application/core there is MY_model.php for main model which implement all methods.
 In /application/models there are other models which extend Main model, load database, configuration files and set table name. 
 
 Routes
+
 In /application/config/routes.php you can find all possible routes.
 
 Authentication
+
 Authentication works before any of the controllers are loaded.
 First it checks token in cookies, if there is no token it checks parameters in authorization 
 header with the one that are in database, if it is OK it generates token and saves it in cookies and database.
@@ -92,6 +98,7 @@ Authentication can be disabled by setting config parameter to false in /applicat
 '$config['enable_hooks'] = FALSE;'.
 
 Cache
+
 Response from GET and POST requests is cached with the help of memcached module.
 Memcache viewer is available on a link http://hostname/memcached.
 Cache can be deleted by a key through GET request or by pressing delete link in a cache viewer.
@@ -99,6 +106,7 @@ Cache controller can be found in /application/controllers/Cache.php, model - /ap
 /application/views/cache.php.
 
 Resized
+
 After adding new image to the database Album_Images Controller add two new records in resized table.
 All images are resized by console ResizeCommand which is run every minute by cron, one image per minute.
 Resized images are stored on a server side in directory /application/data/images/resized.
