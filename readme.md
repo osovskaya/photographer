@@ -13,7 +13,8 @@ resized photos,
 reset password,
 cache viewer.
 
-Installation
+	Installation
+
 To install api you should download it from the source https://github.com/osovskaya/photographer.
 Unpack all files into root directory of your web site. 
 
@@ -37,7 +38,8 @@ To create a database see file photographer.sql.
 1. Create a database for application.
 2. Import file  photographer.sql to created database.
 
-Configuration
+	Configuration
+
 You can find main config file in /application/config/config.php.
 What should be configured:
 1. $config['base_url'] = 'http://hostname/'; (write here your host name)
@@ -63,10 +65,12 @@ Instead of '/var/www/' should be written path to your web directory, where appli
 To run apidoc correctly edit apidoc.json file in the root directory of your application:
 "url" : "https://mysite.com" (write here URL to your web site)
 
-Usage
+	Usage
+	
 Documentation about how to use api is available on a link http://hostname/apidoc, where 'hostname' is your host name.
 
-Structure
+	Structure
+	
 Controllers
 In /application/core there is MY_Controller.php for main controller which implement all methods.
 In application/controllers there are other controllers which extend main controller, load model and set table name.
