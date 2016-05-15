@@ -2,6 +2,13 @@
 
 class Albums_model extends MY_Model
 {
+    /**
+     * Albums_model constructor.
+     *
+     * @property integer $id
+     * @property integer $user
+     * @property string $name
+     */
     public function __construct()
     {
         parent::__construct();
@@ -20,11 +27,8 @@ class Albums_model extends MY_Model
      * add new album
      * method POST
     */
-    public function add()
+    public function add($request)
     {
-        // get POST fields with XSS filtering
-        $request = $this->input->post(NULL, TRUE);
-
         // check fields in post request
         foreach ($request as $field => $value)
         {
@@ -63,17 +67,9 @@ class Albums_model extends MY_Model
      * update album
      * method PUT
     */
-    public function update($id)
+    public function update($request, $object)
     {
-        // check if album with id exists
-		if ($this->db->get_where($this->tableName, array('id' => $id))->row_array() === NULL)
-        {
-            return NULL;
-        }
-
-        // get field value
-        $fields = $this->config->item($this->tableName, 'table_fields');
-        foreach ($fields as $field)
+        foreach ($request as $field)
         {
             if ($this->input->input_stream($field) !== NULL)
             {
@@ -84,7 +80,7 @@ class Albums_model extends MY_Model
         if ($data['user'] !== NULL)
         {
             // check that photographer with id = user exists
-            if (!$this->db->get_where('users', array('id' => $data['user'], 'role' => 2))->row_array())
+            if (!$this->db->get_where('users', array('id' => $object['user'], 'role' => 2))->row_array())
             {
                 return NULL;
             }
@@ -97,7 +93,7 @@ class Albums_model extends MY_Model
         }
 
         // send UPDATE request to DB
-        if(!$this->db->update($this->tableName, $data, "id = $id"))
+        if(!$this->db->update($this->tableName, $data, "id = {$object['id']}"))
         {
             throw new Exception('Internal Server Error. Please try again later');
         }

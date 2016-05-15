@@ -2,6 +2,9 @@
 
 class Cache_model extends Memcached
 {
+    /**
+     * Cache_model constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -10,6 +13,9 @@ class Cache_model extends Memcached
         date_default_timezone_set('Europe/Kiev');
     }
 
+    /**
+     * @return bool
+     */
     public function view()
     {
         $keys = $this->getAllKeys();
@@ -27,6 +33,12 @@ class Cache_model extends Memcached
         return $cacheData;
     }
 
+    /**
+     * @param $key
+     * @param $value
+     * @param int $expiration
+     * @return bool
+     */
     public function addCache($key, $value, $expiration = 0)
     {
         $data['cacheValue'] = $value;

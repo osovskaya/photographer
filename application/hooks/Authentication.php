@@ -2,17 +2,39 @@
 
 class Authentication extends CI_Controller
 {
+    /**
+     * Authentication constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         $this->load->helper('url_helper');
-        $this->load->helper('cookie');
         $this->load->database();
     }
 
+    /**
+     * @apiGroup authentication
+     *
+     * @api {put} /object_name/:id user authorization
+     *
+     * @apiName authenticate
+     *
+     * @apiHeader {String} Authorization Bearer token or Basic username:password
+     *
+     * @apiHeaderExample {String} Header-Example:
+     *     "Authorization: Bearer 123456789"
+     *
+     *  @apiHeaderExample {String} Header-Example:
+     *     "Authorization: Basic test:test"
+     *
+     * @apiSuccess (Success 200) 200 OK
+     *
+     * @apiError 401 Unauthorized
+     *
+     *@apiDescription user authorization
+     */
     public function authenticate()
     {
-        //$this->logout();
         // for all requests except request to add new user
         // and requests to resize image
         if ($this->input->method() == 'post' && $this->uri->segment(1) == 'users')
@@ -20,42 +42,44 @@ class Authentication extends CI_Controller
             return true;
         }
 
-        if ($this->uri->segment(1) == 'resized')
-        {
-            return true;
-        }
+        // get authorization header
+        $headers = getallheaders();
 
-        // get token from cookie
-        $token = $this->input->cookie('access_token', TRUE);
-        if ($token === NULL)
+        if (!isset($headers['Authorization']))
         {
-           // get user by authorization header
-            $user = $this->getUserByHeader();
-        }
-        else
-        {
-            // get user by token
-            $user = $this->getUserByToken($token);
-            // check username
-            if ($user['username'] != $this->input->server('PHP_AUTH_USER'))
-            {
-                // get user by token
-                $this->sendResponse(401);
-                exit();
-            }
-        }
-
-        // authorize user by password
-        if ($user['password'] != $this->input->server('PHP_AUTH_PW'))
-        {
+            //ask to login
             header('WWW-Authenticate: Basic realm="REST API"');
             $this->output->set_header('HTTP/1.1 401 Unauthorized');
             exit();
         }
+
+        $authMethod = substr($headers['Authorization'], 0, 6);
+
+        if ($authMethod == 'Bearer')
+        {
+            // authorize user by token
+            $token = substr($headers['Authorization'], 7);
+            $this->getUserByToken($token);
+            return;
+        }
+        else
+        {
+            // get user by username and password
+            $user = $this->getUserByHeader();
+
+            // authorize user by password
+            if ($user['password'] != $this->input->server('PHP_AUTH_PW'))
+            {
+                header('WWW-Authenticate: Basic realm="REST API"');
+                $this->output->set_header('HTTP/1.1 401 Unauthorized');
+                exit();
+            }
+        }
     }
 
     /**
-     *  Get user data by token
+     * @param $token
+     * @return bool
      */
     public function getUserByToken($token)
     {
@@ -64,18 +88,16 @@ class Authentication extends CI_Controller
         // if token not found, send response 401
         if ($user === NULL)
         {
-            // clear cookie
-            unset($_COOKIE["access_token"]);
             header('WWW-Authenticate: Basic realm="REST API"');
             $this->output->set_header('HTTP/1.1 401 Unauthorized');
             exit();
         }
 
-        return $user;
+        return true;
     }
 
     /**
-     *  Get user data by Authorization header
+     * @return mixed
      */
     public function getUserByHeader()
     {
@@ -103,7 +125,8 @@ class Authentication extends CI_Controller
     }
 
     /**
-     * Generate token and save it in users table and in cookies
+     * @param $username
+     * @return bool
      */
     public function generateToken($username)
     {
@@ -113,19 +136,8 @@ class Authentication extends CI_Controller
         $this->db->where('username', $username);
         $this->db->update('users', $data);
 
-        $this->input->set_cookie('access_token', $token, 86400,'','','','',TRUE);
+        header("Authorization: Bearer $token");
+        $this->output->set_header("Authorization: Bearer $token");
         return true;
-    }
-
-
-
-    public function logout()
-    {
-        // unset cookies
-        unset($_COOKIE);
-
-        //unset authorization header
-        unset($_SERVER['PHP_AUTH_USER']);
-        unset($_SERVER['PHP_AUTH_PW']);
     }
 }

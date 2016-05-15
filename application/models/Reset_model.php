@@ -5,6 +5,13 @@ class Reset_model extends MY_Model
     // code lifetime 10 minutes
     const lifetime = 600;
 
+    /**
+     * Reset_model constructor.
+     *
+     * @property integer $id
+     * @property string $password
+     * @property string $code
+     */
     public function __construct()
     {
         parent::__construct();
@@ -16,6 +23,10 @@ class Reset_model extends MY_Model
         $this->config->load('config_validation');
     }
 
+    /**
+     * @return bool|null
+     * @throws Exception
+     */
     public function checkEmail()
     {
         // get post data
@@ -46,6 +57,11 @@ class Reset_model extends MY_Model
         return $user;
     }
 
+    /**
+     * @param $id
+     * @return string
+     * @throws Exception
+     */
     public function makeCode($id)
     {
         // generate code
@@ -63,6 +79,10 @@ class Reset_model extends MY_Model
         return $data['code'];
     }
 
+    /**
+     * @return bool|null
+     * @throws Exception
+     */
     public function checkCode()
     {
         // get field values

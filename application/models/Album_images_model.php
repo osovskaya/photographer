@@ -2,6 +2,15 @@
 
 class Album_images_model extends MY_Model
 {
+    /**
+     * Album_images_model constructor.
+     *
+     * @property integer $id
+     * @property integer $album
+     * @property string $name
+     * @property string $image
+     * @property string $type
+     */
     public function __construct()
     {
         parent::__construct();
@@ -19,13 +28,21 @@ class Album_images_model extends MY_Model
     /*
      * read object
      * method GET
-    */
+     *
+     * @param $id
+     * @return null
+     */
     public function get($id)
     {
         // if no id passed
         if ($id === NULL)
         {
             $query = $this->db->get($this->tableName)->result_array();
+
+            if ($query === NULL)
+            {
+                return NULL;
+            }
 
             foreach ($query as $key => $value)
             {
@@ -37,15 +54,14 @@ class Album_images_model extends MY_Model
         else
         {
             $query = $this->db->get_where($this->tableName, array('id' => $id))->row_array();
+            if ($query === NULL)
+            {
+                return NULL;
+            }
+
             //encode response
             $query['image'] = base64_encode(addslashes($query['image']));
             $query['image'] = 'data:'.$query['type'].';base64,'.$query['image'];
-        }
-
-        // if no object found
-        if ($query === NULL)
-        {
-            return NULL;
         }
 
         return $query;
@@ -54,13 +70,14 @@ class Album_images_model extends MY_Model
     /*
      * add new image
      * method POST
-    */
-    public function add()
+     * 
+     * @param $request
+     * @return bool|null
+     * @throws Exception
+     */
+    public function add($request)
     {
-        // get POST fields with XSS filtering
-        $request = $this->input->post(NULL, TRUE);
-
-        // check fields in post request
+       // check fields in post request
         foreach ($request as $field => $value)
         {
             // if field unknown throw exception, return 406 code
@@ -74,16 +91,16 @@ class Album_images_model extends MY_Model
         {
             return false;
         }
+
+        if ($_FILES['file']['type'] != 'image/jpeg' || $_FILES['file']['type'] != 'image/png')
+        {
+            return false;
+        }
+
         // read the uploaded image
         $request['image'] = file_get_contents($_FILES['file']['tmp_name']);
         // get the uploaded file type
         $request['type'] = $_FILES['file']['type'];
-
-        // check that image type is jpg or png
-        if ($request['type'] != 'image/jpeg' || $request['type'] != 'image/png')
-        {
-            return false;
-        }
 
         // validate fields
         if (!$this->validate($request, $this->tableName.'_post'))
@@ -113,42 +130,31 @@ class Album_images_model extends MY_Model
         return $image;
     }
 
-    public function update($id)
+    /**
+     * @param $request
+     * @param $object
+     * @return bool|null
+     * @throws Exception
+     */
+    public function update($request, $object)
     {
-        // check if album with id exists
-        if ($this->db->get_where($this->tableName, array('id' => $id))->row_array() === NULL)
-        {
-            return NULL;
-        }
-
-        // get field value
-        $fields = $this->config->item($this->tableName, 'table_fields');
-
-        foreach ($fields as $field)
-        {
-            if ($this->input->input_stream($field) !== NULL)
-            {
-                $data[$field] = $this->input->input_stream($field);
-            }
-        }
-
-        if ($data['album'] !== NULL)
+        if (isset($request['album']))
         {
             // check that album with id = album exists
-            if (!$this->findUser($data['album'], false, 'albums'))
+            if (!$this->db->get_where('albums', array('id' => $object['album'])))
             {
                 return NULL;
             }
         }
-
+        
         // validate fields
-        if (!$this->validate($data, $this->tableName.'_put'))
+        if (!$this->validate($request, $this->tableName.'_put'))
         {
             return false;
         }
 
         // send UPDATE request to DB
-        if(!$this->db->update($this->tableName, $data, "id = $id"))
+        if(!$this->db->update($this->tableName, $request, "id = {$object['id']}"))
         {
             throw new Exception('Internal Server Error. Please try again later');
         }

@@ -28,6 +28,605 @@ define({ "api": [
     "name": ""
   },
   {
+    "group": "album_images",
+    "type": "post",
+    "url": "/album/images/",
+    "title": "add new image",
+    "name": "add",
+    "parameter": {
+      "fields": {
+        "Album/Images Parameters": [
+          {
+            "group": "Album/Images Parameters",
+            "type": "Number",
+            "optional": false,
+            "field": "album",
+            "description": "<p>album id.</p>"
+          },
+          {
+            "group": "Album/Images Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>image name.</p>"
+          },
+          {
+            "group": "Album/Images Parameters",
+            "type": "File",
+            "optional": false,
+            "field": "image",
+            "description": "<p>image/jpeg or image/png.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "json",
+            "optional": false,
+            "field": "object",
+            "description": "<p>all fields and values referred to an object.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 Created\n{\n     \"id\": \"40\",\n     \"album\": \"100\",\n     \"image\": \"data:image/jpeg;base64,/9j/4FwwEEpGSUZcMAEBAVwwYFwwYFwwXDD\n     ....................................................................\n     /Z5G3cf3a+k5rzQZ5FFwVhkVf+WiOyr/6H6n/vqu+VWnVly1IlVsLCPvR90//Z\",\n     created_at\": \"2016-05-10 17:14:52\",\n     \"name\": \"1\",\n     \"type\": \"image/jpeg\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Empty Request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "406",
+            "description": "<p>Not Passed Validation</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>add new image.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Album_images.php",
+    "groupTitle": "album_images"
+  },
+  {
+    "group": "album_images",
+    "type": "delete",
+    "url": "/album/images/:id",
+    "title": "delete image by id",
+    "name": "delete",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>unique ID of an object.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 204": [
+          {
+            "group": "Success 204",
+            "optional": false,
+            "field": "204",
+            "description": "<p>Updated</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Empty Request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>delete image by id.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Album_images.php",
+    "groupTitle": "album_images"
+  },
+  {
+    "group": "album_images",
+    "type": "get",
+    "url": "/album/images/:id",
+    "title": "get information about image",
+    "name": "get",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "id",
+            "defaultValue": "NULL",
+            "description": "<p>unique ID of an object.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "object",
+            "description": "<p>all fields and values referred to an object.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": \"38\",\n  \"album\": \"100\",\n  \"image\": \"data:image/jpeg;base64,/9j/4FwwEEpGSUZcMAEBAVwwYFwwYFwwXDD\n  ....................................................................\n  /Z5G3cf3a+k5rzQZ5FFwVhkVf+WiOyr/6H6n/vqu+VWnVly1IlVsLCPvR90//Z\",\n  created_at\": \"2016-05-10 17:14:52\",\n  \"name\": \"///\",\n  \"type\": \"image/jpeg\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>NotFound</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>get image by id or group of images if no id passed.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Album_images.php",
+    "groupTitle": "album_images"
+  },
+  {
+    "group": "album_images",
+    "type": "put",
+    "url": "/album/images/:id",
+    "title": "update image by id",
+    "name": "update",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>unique ID of an object.</p>"
+          }
+        ],
+        "Album/Images Parameters": [
+          {
+            "group": "Album/Images Parameters",
+            "type": "Number",
+            "optional": true,
+            "field": "album",
+            "description": "<p>album id.</p>"
+          },
+          {
+            "group": "Album/Images Parameters",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>image name.</p>"
+          },
+          {
+            "group": "Album/Images Parameters",
+            "type": "File",
+            "optional": true,
+            "field": "image",
+            "description": "<p>image/jpeg or image/png.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 204": [
+          {
+            "group": "Success 204",
+            "optional": false,
+            "field": "204",
+            "description": "<p>Updated</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Empty Request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "406",
+            "description": "<p>Not Passed Validation</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>update image by id.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Album_images.php",
+    "groupTitle": "album_images"
+  },
+  {
+    "group": "albums",
+    "type": "post",
+    "url": "/albums/",
+    "title": "add new album",
+    "name": "add",
+    "parameter": {
+      "fields": {
+        "Album Parameters": [
+          {
+            "group": "Album Parameters",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>album name.</p>"
+          },
+          {
+            "group": "Album Parameters",
+            "type": "Number",
+            "optional": false,
+            "field": "user",
+            "description": "<p>user id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "json",
+            "optional": false,
+            "field": "object",
+            "description": "<p>all fields and values referred to an object.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 Created\n{\n  \"id\": \"4\",\n  \"user\": \"3\",\n  \"name\": \"test\",\n  \"active\": \"1\",\n  \"created_at\": \"2016-05-15 22:18:57\",\n  \"modified_at\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Empty Request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "406",
+            "description": "<p>Not Passed Validation</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>add new album.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Albums.php",
+    "groupTitle": "albums"
+  },
+  {
+    "group": "albums",
+    "type": "delete",
+    "url": "/albums/:id",
+    "title": "delete album by id",
+    "name": "delete",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>unique ID of an object.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 204": [
+          {
+            "group": "Success 204",
+            "optional": false,
+            "field": "204",
+            "description": "<p>Updated</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Empty Request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>delete album by id.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Albums.php",
+    "groupTitle": "albums"
+  },
+  {
+    "group": "albums",
+    "type": "get",
+    "url": "/albums/:id",
+    "title": "get information about album",
+    "name": "get",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "id",
+            "defaultValue": "NULL",
+            "description": "<p>unique ID of an object.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "object",
+            "description": "<p>all fields and values referred to an object.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"id\": \"1\",\n  \"user\": \"3\",\n  \"name\": \"a\",\n  \"active\": \"1\",\n  \"created_at\": \"2016-05-08 15:34:58\",\n  \"modified_at\": null\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>NotFound</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>get album by id or group of albums if no id passed.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Albums.php",
+    "groupTitle": "albums"
+  },
+  {
+    "group": "albums",
+    "type": "put",
+    "url": "/albums/:id",
+    "title": "update album by id",
+    "name": "update",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>unique ID of an object.</p>"
+          }
+        ],
+        "Album Parameters": [
+          {
+            "group": "Album Parameters",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>album name.</p>"
+          },
+          {
+            "group": "Album Parameters",
+            "type": "Number",
+            "optional": true,
+            "field": "user",
+            "description": "<p>user id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 204": [
+          {
+            "group": "Success 204",
+            "optional": false,
+            "field": "204",
+            "description": "<p>Updated</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Empty Request</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "406",
+            "description": "<p>Not Passed Validation</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>update album by id.</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Albums.php",
+    "groupTitle": "albums"
+  },
+  {
+    "group": "authentication",
+    "type": "put",
+    "url": "/object_name/:id",
+    "title": "user authorization",
+    "name": "authenticate",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer token or Basic username:password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "\"Authorization: Bearer 123456789\"",
+          "type": "String"
+        },
+        {
+          "title": "Header-Example:",
+          "content": "\"Authorization: Basic test:test\"",
+          "type": "String"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "200",
+            "description": "<p>OK</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>user authorization</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/hooks/Authentication.php",
+    "groupTitle": "authentication"
+  },
+  {
+    "group": "cache",
     "type": "get",
     "url": "/memcached/:key",
     "title": "delete cache by key",
@@ -60,10 +659,10 @@ define({ "api": [
     "description": "<p>delete cache by key.</p>",
     "version": "0.0.0",
     "filename": "/var/www/mysite.com/public/application/controllers/Cache.php",
-    "group": "_var_www_mysite_com_public_application_controllers_Cache_php",
-    "groupTitle": "_var_www_mysite_com_public_application_controllers_Cache_php"
+    "groupTitle": "cache"
   },
   {
+    "group": "cache",
     "type": "get",
     "url": "/memcached/",
     "title": "get list of keys stored in cache",
@@ -95,10 +694,10 @@ define({ "api": [
     "description": "<p>get list of keys stored in cache.</p>",
     "version": "0.0.0",
     "filename": "/var/www/mysite.com/public/application/controllers/Cache.php",
-    "group": "_var_www_mysite_com_public_application_controllers_Cache_php",
-    "groupTitle": "_var_www_mysite_com_public_application_controllers_Cache_php"
+    "groupTitle": "cache"
   },
   {
+    "group": "reset",
     "type": "post",
     "url": "/reset/",
     "title": "request to reset password",
@@ -155,10 +754,10 @@ define({ "api": [
     "description": "<p>request to reset password.</p>",
     "version": "0.0.0",
     "filename": "/var/www/mysite.com/public/application/controllers/Reset.php",
-    "group": "_var_www_mysite_com_public_application_controllers_Reset_php",
-    "groupTitle": "_var_www_mysite_com_public_application_controllers_Reset_php"
+    "groupTitle": "reset"
   },
   {
+    "group": "reset",
     "type": "put",
     "url": "/reset/",
     "title": "reset password",
@@ -222,113 +821,108 @@ define({ "api": [
     "description": "<p>reset password.</p>",
     "version": "0.0.0",
     "filename": "/var/www/mysite.com/public/application/controllers/Reset.php",
-    "group": "_var_www_mysite_com_public_application_controllers_Reset_php",
-    "groupTitle": "_var_www_mysite_com_public_application_controllers_Reset_php"
+    "groupTitle": "reset"
   },
   {
+    "group": "resized",
+    "type": "get",
+    "url": "/reset/:id",
+    "title": "get information about resized image",
+    "name": "get",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "id",
+            "defaultValue": "NULL",
+            "description": "<p>unique photo_id of an image.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "object",
+            "description": "<p>all fields and values referred to an object.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n     \"size\": \"100\",\n     \"photo_id\": \"39\",\n     \"src\": \"application/data/images/resized/3/100_39.jpg\",\n     \"status\": \"complete\",\n     \"comment\": null,\n     \"id\": \"2\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>NotFound</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>get resized image by image id</p>",
+    "version": "0.0.0",
+    "filename": "/var/www/mysite.com/public/application/controllers/Resized.php",
+    "groupTitle": "resized"
+  },
+  {
+    "group": "users",
     "type": "post",
-    "url": "/object_name/",
-    "title": "add new object",
+    "url": "/users/",
+    "title": "add new user",
     "name": "add",
     "parameter": {
       "fields": {
-        "User Parameters": [
+        "Users Parameters": [
           {
-            "group": "User Parameters",
+            "group": "Users Parameters",
             "type": "String",
             "optional": false,
             "field": "role",
             "description": "<p>user role form a list (admin, photographer, client).</p>"
           },
           {
-            "group": "User Parameters",
+            "group": "Users Parameters",
             "type": "String",
             "optional": false,
             "field": "name",
             "description": "<p>user name.</p>"
           },
           {
-            "group": "User Parameters",
+            "group": "Users Parameters",
             "type": "String",
             "optional": false,
             "field": "username",
             "description": "<p>unique username.</p>"
           },
           {
-            "group": "User Parameters",
+            "group": "Users Parameters",
             "type": "String",
             "optional": false,
             "field": "password",
             "description": "<p>user password.</p>"
           },
           {
-            "group": "User Parameters",
+            "group": "Users Parameters",
             "type": "Number",
             "optional": true,
             "field": "phone",
             "description": "<p>user phone.</p>"
-          }
-        ],
-        "Album Parameters": [
-          {
-            "group": "Album Parameters",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>album name.</p>"
-          },
-          {
-            "group": "Album Parameters",
-            "type": "Number",
-            "optional": false,
-            "field": "user",
-            "description": "<p>user id.</p>"
-          }
-        ],
-        "Album/Images Parameters": [
-          {
-            "group": "Album/Images Parameters",
-            "type": "Number",
-            "optional": false,
-            "field": "album",
-            "description": "<p>album id.</p>"
-          },
-          {
-            "group": "Album/Images Parameters",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>image name.</p>"
-          },
-          {
-            "group": "Album/Images Parameters",
-            "type": "File",
-            "optional": false,
-            "field": "image",
-            "description": "<p>image/jpeg or image/png.</p>"
-          }
-        ],
-        "Resized Parameters": [
-          {
-            "group": "Resized Parameters",
-            "type": "String",
-            "optional": false,
-            "field": "size",
-            "description": "<p>size of a resized image.</p>"
-          },
-          {
-            "group": "Resized Parameters",
-            "type": "Number",
-            "optional": false,
-            "field": "photo_id",
-            "description": "<p>image id.</p>"
-          },
-          {
-            "group": "Resized Parameters",
-            "type": "String",
-            "optional": true,
-            "field": "comment",
-            "description": "<p>comment.</p>"
           }
         ]
       }
@@ -365,28 +959,22 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "404",
-            "description": "<p>Not Found</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
             "field": "406",
             "description": "<p>Not Passed Validation</p>"
           }
         ]
       }
     },
-    "description": "<p>add new object.</p>",
+    "description": "<p>add new user.</p>",
     "version": "0.0.0",
-    "filename": "/var/www/mysite.com/public/application/core/MY_Controller.php",
-    "group": "_var_www_mysite_com_public_application_core_MY_Controller_php",
-    "groupTitle": "_var_www_mysite_com_public_application_core_MY_Controller_php"
+    "filename": "/var/www/mysite.com/public/application/controllers/Users.php",
+    "groupTitle": "users"
   },
   {
+    "group": "users",
     "type": "delete",
-    "url": "/object_name/:id",
-    "title": "delete object by id",
+    "url": "/users/:id",
+    "title": "delete user by id",
     "name": "delete",
     "parameter": {
       "fields": {
@@ -431,16 +1019,16 @@ define({ "api": [
         ]
       }
     },
-    "description": "<p>delete object by id.</p>",
+    "description": "<p>delete user by id.</p>",
     "version": "0.0.0",
-    "filename": "/var/www/mysite.com/public/application/core/MY_Controller.php",
-    "group": "_var_www_mysite_com_public_application_core_MY_Controller_php",
-    "groupTitle": "_var_www_mysite_com_public_application_core_MY_Controller_php"
+    "filename": "/var/www/mysite.com/public/application/controllers/Users.php",
+    "groupTitle": "users"
   },
   {
+    "group": "users",
     "type": "get",
-    "url": "/object_name/:id",
-    "title": "get information about object",
+    "url": "/users/:id",
+    "title": "get information about user",
     "name": "get",
     "parameter": {
       "fields": {
@@ -488,16 +1076,16 @@ define({ "api": [
         ]
       }
     },
-    "description": "<p>get object by id or group of objects if no id passed.</p>",
+    "description": "<p>get user by id or group of users if no id passed.</p>",
     "version": "0.0.0",
-    "filename": "/var/www/mysite.com/public/application/core/MY_Controller.php",
-    "group": "_var_www_mysite_com_public_application_core_MY_Controller_php",
-    "groupTitle": "_var_www_mysite_com_public_application_core_MY_Controller_php"
+    "filename": "/var/www/mysite.com/public/application/controllers/Users.php",
+    "groupTitle": "users"
   },
   {
+    "group": "users",
     "type": "put",
-    "url": "/object_name/:id",
-    "title": "update object by id",
+    "url": "/users/:id",
+    "title": "update user by id",
     "name": "update",
     "parameter": {
       "fields": {
@@ -546,75 +1134,6 @@ define({ "api": [
             "field": "phone",
             "description": "<p>user phone.</p>"
           }
-        ],
-        "Album Parameters": [
-          {
-            "group": "Album Parameters",
-            "type": "String",
-            "optional": true,
-            "field": "name",
-            "description": "<p>album name.</p>"
-          },
-          {
-            "group": "Album Parameters",
-            "type": "Number",
-            "optional": true,
-            "field": "user",
-            "description": "<p>user id.</p>"
-          }
-        ],
-        "Album/Images Parameters": [
-          {
-            "group": "Album/Images Parameters",
-            "type": "Number",
-            "optional": true,
-            "field": "album",
-            "description": "<p>album id.</p>"
-          },
-          {
-            "group": "Album/Images Parameters",
-            "type": "String",
-            "optional": true,
-            "field": "name",
-            "description": "<p>image name.</p>"
-          },
-          {
-            "group": "Album/Images Parameters",
-            "type": "File",
-            "optional": true,
-            "field": "image",
-            "description": "<p>image/jpeg or image/png.</p>"
-          }
-        ],
-        "Resized Parameters": [
-          {
-            "group": "Resized Parameters",
-            "type": "String",
-            "optional": false,
-            "field": "size",
-            "description": "<p>size of a resized image.</p>"
-          },
-          {
-            "group": "Resized Parameters",
-            "type": "String",
-            "optional": true,
-            "field": "src",
-            "description": "<p>path to resized image.</p>"
-          },
-          {
-            "group": "Resized Parameters",
-            "type": "String",
-            "optional": true,
-            "field": "status",
-            "description": "<p>status.</p>"
-          },
-          {
-            "group": "Resized Parameters",
-            "type": "String",
-            "optional": true,
-            "field": "comment",
-            "description": "<p>comment.</p>"
-          }
         ]
       }
     },
@@ -654,10 +1173,9 @@ define({ "api": [
         ]
       }
     },
-    "description": "<p>update object by id.</p>",
+    "description": "<p>update user by id.</p>",
     "version": "0.0.0",
-    "filename": "/var/www/mysite.com/public/application/core/MY_Controller.php",
-    "group": "_var_www_mysite_com_public_application_core_MY_Controller_php",
-    "groupTitle": "_var_www_mysite_com_public_application_core_MY_Controller_php"
+    "filename": "/var/www/mysite.com/public/application/controllers/Users.php",
+    "groupTitle": "users"
   }
 ] });

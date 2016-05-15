@@ -60,7 +60,7 @@ class CI_Controller {
 	public $codeStatus = array(
 		200 => 'OK',
 		201 => 'Created',
-		204 => 'Updated.',
+		204 => 'Updated',
 		400 => 'Empty request',
 		401 => 'Unauthorized',
 		403 => 'Access denied',

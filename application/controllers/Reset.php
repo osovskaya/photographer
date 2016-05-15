@@ -4,7 +4,10 @@ require_once APPPATH.'libraries/swiftmailer/swift_required.php';
 
 class Reset extends CI_Controller
 {
-	public function __construct()
+    /**
+     * Reset constructor.
+     */
+    public function __construct()
 	{
 		parent:: __construct();
 		// load model
@@ -12,6 +15,8 @@ class Reset extends CI_Controller
 	}
 
     /**
+     * @apiGroup reset
+     *
      * @api {post} /reset/ request to reset password
      *
      * @apiName mail
@@ -53,6 +58,10 @@ class Reset extends CI_Controller
         }
     }
 
+    /**
+     * @param $code
+     * @return bool
+     */
     public function sendMail($code)
     {
         //Create the Transport
@@ -83,6 +92,8 @@ class Reset extends CI_Controller
     }
 
     /**
+     * @apiGroup reset
+     *
      * @api {put} /reset/ reset password
      *
      * @apiName password

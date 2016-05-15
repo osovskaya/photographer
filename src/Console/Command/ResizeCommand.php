@@ -2,147 +2,103 @@
 
 namespace Console\Command;
 
+use \PDO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ResizeCommand extends Command
 {
-    private $config;
+    protected $config = null;
+
     protected function configure()
     {
         $this
             ->setName('resize')
             ->setDescription('resize photo')
         ;
-        $this->config = include('config.php');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // get image to resize
-        if(!$this->getResized())
+        // include configuration data
+        $this->config = include('config.php');
+        // connect to database
+        $dsn = $this->config['db']['dsn'];
+        $db = new PDO($dsn, $this->config['db']['username'], $this->config['db']['password']);
+        $db->exec("set names utf8");
+        if (!$db)
         {
-            $output->writeln('Nothing to resize');
+            $output->writeln('Error connecting to database');
             exit();
         }
 
-        $image = json_decode($this->getResized(), TRUE);
-        if ($image === NULL)
+        // find the earliest image with new status to be resized
+        $query = $db->query('SELECT * FROM `resized` WHERE `status`=1 ORDER BY `id` ASC');
+        $image = $query->fetch(PDO::FETCH_ASSOC);
+
+        if (!$image)
         {
-            $output->writeln('Resize failed');
+            $output->writeln('All images resized');
             exit();
         }
 
         // set status 'in_progres'
-        $this->putResized(array('status' => 'in_progress'), $image);
+        $sql = 'UPDATE `resized` SET `status` = 2 WHERE `id` = :id';
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $image['id'], PDO::PARAM_INT);
+        $result->execute();
 
-        // find the image itself and get row image data
-        $imageOriginal = json_decode($this->getAlbumImages($image['photo_id']), TRUE);
-        if ($imageOriginal === NULL)
-        {
-            $output->writeln('Resize failed');
-            exit();
-        }
-        $imageOriginal['image'] = explode(',', $imageOriginal['image'], 2)[1];
-        $imageOriginal['image'] = stripslashes(base64_decode($imageOriginal['image']));
-
-
+        // get the image original
+        $sql = 'SELECT * FROM `album/images` WHERE `id` = :id';
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $image['photo_id'], PDO::PARAM_INT);
+        $result->execute();
+        $imageOriginal = $result->fetch(PDO::FETCH_ASSOC);
 
         // prepare path for resized image
         $src = 'application/data/images/resized/';
-        if (!file_exists($src.'/'.$imageOriginal['album']))
+        if (!file_exists($this->config['root'].$src.$imageOriginal['album']))
         {
             mkdir($this->config['root'].$src.'/'.$imageOriginal['album'], 0700);
         }
         $src .= $imageOriginal['album'].'/'.$image['size'].'_'.$imageOriginal['id'].'.jpg';
+        $path = $this->config['root'].$src;
 
         // resize image
-        if (!$this->resize($imageOriginal, $image, $this->config['root'].$src))
+        $imageResource = imagecreatefromstring($imageOriginal['image']);
+        if (!$imageResource)
         {
-            // set status 'error'
-            $this->putResized(array('status' => 'error'), $image);
+            $output->writeln('Error reading image data');
             exit();
         }
-
-        // write src of resized image
-        $this->putResized(array('src' => $src), $image);
-
-        //set status 'complete'
-        $this->putResized(array('status' => 'complete'), $image);
-
-        $output->writeln('Resize successful for image '.$imageOriginal['id']);
-    }
-
-    public function resize($imageOriginal, $imageResized, $src)
-    {
-        $imageResource = imagecreatefromstring($imageOriginal['image']);
-        $imageScale = imagescale($imageResource, (int) $imageResized['size'],(int) $imageResized['size']);
-        if (imagejpeg($imageScale, $src) === false)
+        $imageScale = imagescale($imageResource, (int) $image['size']);
+        if (imagejpeg($imageScale, $path) === false)
         {
-            return false;
+            // set status 'error'
+            $sql = 'UPDATE `resized` SET `status` = 4 WHERE `id` = :id';
+            $result = $db->prepare($sql);
+            $result->bindParam(':id', $image['id'], PDO::PARAM_INT);
+            $result->execute();
+            $output->writeln('Resize failed');
+            exit();
         }
         imagedestroy($imageResource);
         imagedestroy($imageScale);
-        return true;
-    }
 
-    public function getResized()
-    {
-        $curl = curl_init($this->config['base_url'].'resized?status=1');
+        // write src of resized image
+        $sql = 'UPDATE `resized` SET `src` = :src WHERE `id` = :id';
+        $result = $db->prepare($sql);
+        $result->bindParam(':src', $src, PDO::PARAM_STR);
+        $result->bindParam(':id', $image['id'], PDO::PARAM_INT);
+        $result->execute();
 
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+        //set status 'complete'
+        $sql = 'UPDATE `resized` SET `status` = 3 WHERE `id` = :id';
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $image['id'], PDO::PARAM_INT);
+        $result->execute();
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        // Send the request
-        $response = curl_exec($curl);
-        // Free up the resources $curl is using
-        curl_close($curl);
-
-        return $response;
-    }
-
-    public function putResized($data, $image)
-    {
-        $data['size'] = $image['size'];
-        $data_string = http_build_query($data);
-
-        $curl = curl_init($this->config['base_url'].'resized/'.$image['photo_id']);
-
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/x-www-form-urlencoded',
-                'Content-Length: ' . strlen($data_string))
-        );
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-
-        // Send the request
-        $response = curl_exec($curl);
-
-        // Free up the resources $curl is using
-        curl_close($curl);
-
-        return $response;
-    }
-
-    public function getAlbumImages($photo_id)
-    {
-        $curl = curl_init($this->config['base_url'].'album/images/'.$photo_id);
-
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        // Send the request
-        $response = curl_exec($curl);
-
-        // Free up the resources $curl is using
-        curl_close($curl);
-
-        return $response;
+        $output->writeln($imageOriginal['id']);
     }
 }

@@ -102,7 +102,7 @@ $config['album/images_post'] = array(
     array(
         'field' => 'album',
         'label' => 'album',
-        'rules' => 'required|max_length[10]'
+        'rules' => 'required|max_length[10]|integer'
     ),
     array(
         'field' => 'name',
@@ -130,7 +130,7 @@ $config['album/images_put'] = array(
     array(
         'field' => 'name',
         'label' => 'name',
-        'rules' => 'max_length[50]'
+        'rules' => 'max_length[50]|alpha_numeric'
     ),
     array(
         'field' => 'type',

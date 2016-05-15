@@ -1,5 +1,9 @@
 <?php
 return $config = array(
     'root' =>'/var/www/mysite.com/public/',
-    'base_url' => 'http://mysite.com/'
+    'db' => array(
+    'dsn' => "mysql:host=localhost;dbname=photographer",
+    'username' => 'root',
+    'password' => 'O$0vskaya'
+)
 );

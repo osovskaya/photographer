@@ -2,6 +2,16 @@
 
 class Users_model extends MY_Model
 {
+    /**
+     * Users_model constructor.
+     *
+     * @property integer $id
+     * @property string $role
+     * @property string $name
+     * @property string $username
+     * @property string $password
+     * @property string $phone
+     */
     public function __construct()
     {
         parent::__construct();
@@ -15,4 +25,5 @@ class Users_model extends MY_Model
         // set tablename
         $this->tableName = 'users';
     }
+
 }

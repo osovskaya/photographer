@@ -7,7 +7,10 @@ class MY_Model extends CI_Model
     /*
      * read object
      * method GET
-    */
+     * 
+     * @param $id
+     * @return null
+     */
     public function get($id)
     {
         // if no id passed
@@ -33,12 +36,13 @@ class MY_Model extends CI_Model
     /*
      * add new object
      * method POST
-    */
-    public function add()
+     * 
+     * @param $request
+     * @return bool
+     * @throws Exception
+     */
+    public function add($request)
     {
-        // get POST fields with XSS filtering
-        $request = $this->input->post(NULL, TRUE);
-
         // check fields in post request
         foreach ($request as $field => $value)
         {
@@ -70,33 +74,22 @@ class MY_Model extends CI_Model
     /*
      * update object
      * method PUT
-    */
-    public function update($id)
+     *
+     * @param $request
+     * @param $object
+     * @return bool
+     * @throws Exception
+     */
+    public function update($request, $object)
     {
-        // check if object with id exists
-        if ($this->db->get_where($this->tableName, array('id' => $id))->row_array() === NULL)
-        {
-            return NULL;
-        }
-
-        // get field values
-        $fields = $this->config->item($this->tableName, 'table_fields');
-
-        foreach ($fields as $field)
-        {
-            if ($this->input->input_stream($field) !== NULL)
-            {
-                $data[$field] = $this->input->input_stream($field);
-            }
-        }
         // validate fields
-        if (!$this->validate($data, $this->tableName.'_put'))
+        if (!$this->validate($request, $this->tableName.'_put'))
         {
             return false;
         }
 
         // send UPDATE request to DB
-        if(!$this->db->update($this->tableName, $data, "id = $id"))
+        if(!$this->db->update($this->tableName, $request, "id = {$object['id']}"))
         {
             throw new Exception('Internal Server Error. Please try again later');
         }
@@ -106,15 +99,13 @@ class MY_Model extends CI_Model
     /*
      * delete object
      * method DELETE
-    */
+     *
+     * @param $id
+     * @return bool
+     * @throws Exception
+     */
     public function delete($id)
     {
-        // check if object with id exists
-        if ($this->db->get_where($this->tableName, array('id' => $id))->row_array() === NULL)
-        {
-            return NULL;
-        }
-
         // send DELETE request to DB
         if(!$this->db->delete($this->tableName, array('id' => $id)))
         {
@@ -123,9 +114,12 @@ class MY_Model extends CI_Model
         return true;
     }
 
-
     /**
      * validate fields
+     *
+     * @param $data
+     * @param $rules
+     * @return bool
      */
     public function validate($data, $rules)
     {

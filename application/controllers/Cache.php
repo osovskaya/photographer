@@ -2,6 +2,9 @@
 
 class Cache extends CI_Controller
 {
+    /**
+     * Cache constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -11,6 +14,8 @@ class Cache extends CI_Controller
     }
 
     /**
+     * @apiGroup cache
+     *
      * @api {get} /memcached/ get list of keys stored in cache
      *
      * @apiName view
@@ -39,6 +44,8 @@ class Cache extends CI_Controller
     }
 
     /**
+     * @apiGroup cache
+     *
      * @api {get} /memcached/:key delete cache by key
      *
      * @apiName delete

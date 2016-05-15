@@ -4,6 +4,9 @@ class MY_Controller extends CI_Controller
 {
     public $tableName = NULL;
 
+	/**
+	 * MY_Controller constructor.
+     */
 	public function __construct()
 	{
 		parent::__construct();
@@ -11,34 +14,10 @@ class MY_Controller extends CI_Controller
 		// load cache_model
 		$this->load->model('cache_model');
 	}
-    
+
 	/**
-	 * @api {get} /object_name/:id get information about object
-	 *
-	 * @apiName get
-	 *
-	 * @apiParam {Number} [id = NULL] unique ID of an object.
-	 *
-	 * @apiSuccess {json} object all fields and values referred to an object.
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 *     HTTP/1.1 200 OK
-	 *     {
-	 *       "id": "5",
-	 *       "role": "client",
-	 *       "name": "client",
-	 *       "username": "client",
-	 *       "password": "client",
-	 *       "token": null,
-	 *       "phone": null,
-	 *       "modified_at": null,
-	 *       "created_at": "2016-04-04 11:36:55"
-	 *     }
-	 *
-	 * @apiError 404 NotFound
-	 *
-	 *@apiDescription get object by id or group of objects if no id passed.
-	 */
+	 * @param null $id
+     */
 	public function get($id = NULL)
 	{
 		$response = $this->object->get($id);
@@ -63,46 +42,8 @@ class MY_Controller extends CI_Controller
 	}
 
 	/**
-	 * @api {post} /object_name/ add new object
-	 *
-	 * @apiName add
-	 *
-	 * @apiParam (User Parameters) {String} role user role form a list (admin, photographer, client).
-	 * @apiParam (User Parameters) {String} name user name.
-	 * @apiParam (User Parameters) {String} username unique username.
-	 * @apiParam (User Parameters) {String} password user password.
-	 * @apiParam (User Parameters) {Number} [phone] user phone.
-	 * 
-	 * @apiParam (Album Parameters) {String} name album name.
-	 * @apiParam (Album Parameters) {Number} user user id.
-	 * 
-	 * @apiParam (Album/Images Parameters) {Number} album album id.
-	 * @apiParam (Album/Images Parameters) {String} name image name.
-	 * @apiParam (Album/Images Parameters) {File} image image/jpeg or image/png.
-	 *
-	 * @apiParam (Resized Parameters) {String} size size of a resized image.
-	 * @apiParam (Resized Parameters) {Number} photo_id image id.
-	 * @apiParam (Resized Parameters) {String} [comment] comment.
-	 *
-	 * @apiSuccess (Success 201) {json} object all fields and values referred to an object.
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 *     HTTP/1.1 201 Created
-	 *     {
-	 *		"id": "12",
-	 *		"user": "88",
-	 *		"name": "test",
-	 *		"active": "1",
-	 *		"created_at": "2016-04-26 16:57:23",
-	 *		"modified_at": null
-	 *     }
-	 *
-	 * @apiError 400 Empty Request
-	 * @apiError 404 Not Found
-	 * @apiError 406 Not Passed Validation
-	 *
-	 *@apiDescription add new object.
-	 */
+	 * add new object
+     */
 	public function add()
 	{
 		//if post body empty, return code 400
@@ -112,13 +53,15 @@ class MY_Controller extends CI_Controller
 			exit();
 		}
 
+		// get POST fields with XSS filtering
+		$request = $this->input->post(NULL, TRUE);
+
 		// add new object
-		$response = $this->object->add();
+		$response = $this->object->add($request);
 
 		// if request is successful return 201 code
 		// and object with userid in json format
-		if ($response === NULL) $this->sendResponse(404);
-		elseif ($response === false) $this->sendResponse(406, $this->form_validation->error_array());
+		if ($response === false) $this->sendResponse(406, $this->form_validation->error_array());
 		elseif ($response)
 		{
 			// save response in a cache
@@ -136,43 +79,19 @@ class MY_Controller extends CI_Controller
 	}
 
 	/**
-	 * @api {put} /object_name/:id update object by id
-	 *
-	 * @apiName update
-	 *
-	 * @apiParam {Number} id unique ID of an object.
-	 *
-	 * @apiParam (User Parameters) {String} [role] user role form a list (admin, photographer, client).
-	 * @apiParam (User Parameters) {String} [name] user name.
-	 * @apiParam (User Parameters) {String} [username] unique username.
-	 * @apiParam (User Parameters) {String} [password] user password.
-	 * @apiParam (User Parameters) {Number} [phone] user phone.
-	 *
-	 * @apiParam {Number} [id = NULL] unique ID of an object.
-	 * @apiParam (Album Parameters) {String} [name] album name.
-	 * @apiParam (Album Parameters) {Number} [user] user id.
-	 *
-	 * @apiParam {Number} [id = NULL] unique ID of an object.
-	 * @apiParam (Album/Images Parameters) {Number} [album] album id.
-	 * @apiParam (Album/Images Parameters) {String} [name] image name.
-	 * @apiParam (Album/Images Parameters) {File} [image] image/jpeg or image/png.
-	 *
-	 * @apiParam {Number} [id = NULL] photo_id image id.
-	 * @apiParam (Resized Parameters) {String} size size of a resized image.
-	 * @apiParam (Resized Parameters) {String} [src] path to resized image.
-	 * @apiParam (Resized Parameters) {String} [status] status.
-	 * @apiParam (Resized Parameters) {String} [comment] comment.
-	 *
-	 * @apiSuccess (Success 204) 204 Updated
-	 *
-	 * @apiError 400 Empty Request
-	 * @apiError 404 Not Found
-	 * @apiError 406 Not Passed Validation
-	 *
-	 *@apiDescription update object by id.
-	 */
+	 * @param $id
+     */
 	public function update($id)
 	{
+		// check if object with id exists
+		$object = $this->object->get($id);
+
+		if($object == null)
+		{
+			$this->sendResponse(404);
+			exit();
+		}
+
 		// if put body empty
 		if (!$this->input->raw_input_stream)
 		{
@@ -180,28 +99,35 @@ class MY_Controller extends CI_Controller
 			exit();
 		}
 
-		// update object
-		$response = $this->object->update($id);
+		// get field values
+		$fields = $this->config->item($this->tableName, 'table_fields');
 
-		if ($response === NULL) $this->sendResponse(404);
-		elseif ($response === false) $this->sendResponse(406, $this->form_validation->error_array());
+		// get fields in request
+		foreach ($fields as $field)
+		{
+			if ($this->input->input_stream($field) !== NULL)
+			{
+				$request[$field] = $this->input->input_stream($field);
+			}
+		}
+
+		if (!isset($request))
+		{
+			$this->sendResponse(406);
+			exit();
+		}
+
+		// update object
+		$response = $this->object->update($request, $object);
+
+		if ($response === false) $this->sendResponse(406, $this->form_validation->error_array());
+		elseif ($response === NULL) $this->sendResponse(404);
 		elseif ($response) $this->sendResponse(204);
 	}
 
 	/**
-	 * @api {delete} /object_name/:id delete object by id
-	 *
-	 * @apiName delete
-	 *
-	 * @apiParam {Number} id unique ID of an object.
-	 *
-	 * @apiSuccess (Success 204) 204 Updated
-	 *
-	 * @apiError 400 Empty Request
-	 * @apiError 404 Not Found
-	 *
-	 *@apiDescription delete object by id.
-	 */
+	 * @param $id
+     */
 	public function delete($id)
 	{
 		// if id is 0
@@ -211,11 +137,20 @@ class MY_Controller extends CI_Controller
 			exit();
 		}
 
-		// delete object
-		$response = $this->object->delete($id);
+		// check if object with id exists
+		$object = $this->object->get($id);
+		if($object === null)
+		{
+			$this->sendResponse(404);
+			exit();
+		}
 
-		if ($response === NULL) $this->sendResponse(404);
-		elseif ($response) $this->sendResponse(204);
+		// delete object
+		if ($this->object->delete($id))
+		{
+			$this->sendResponse(204);
+			exit();
+		}
 	}
 
 	public function logout()
