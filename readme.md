@@ -27,13 +27,13 @@ application
 src
 system
 vendor
-apidoc.json      
-composer.json 
-composer.lock   
-index.php    
+apidoc.json
+composer.json
+composer.lock
+index.php   
 photographer.sql 
 license.txt  
-readme.rst             
+readme.rst
 readme.txt 
 
 To create a database see file photographer.sql.
