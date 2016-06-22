@@ -21,20 +21,20 @@ To install api you should download it from the source https://github.com/osovska
 Unpack all files into root directory of your web site. 
 
 You should get the following file structure:
-apidoc
-app
-application  
+apidoc 
+app 
+application 
 src
-system
-vendor
-apidoc.json
-composer.json
-composer.lock
-index.php   
-photographer.sql 
-license.txt  
-readme.rst
-readme.txt 
+system 
+vendor 
+apidoc.json 
+composer.json 
+composer.lock 
+index.php    
+photographer.sql  
+license.txt   
+readme.rst 
+readme.txt  
 
 To create a database see file photographer.sql.
 1. Create a database for application.
